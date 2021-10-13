@@ -123,13 +123,11 @@ func (c Client) createRequest(method string, endpoint string, params url.Values)
 	ts := time.Now().UnixNano() / int64(time.Millisecond)
 	// add required timestamp value
 	params.Add("timestamp", fmt.Sprint(ts))
-	fmt.Println(method)
 	if method == "GET" || method == "DELETE" {
 		req, err = http.NewRequest(method, fmt.Sprintf("%s?%s", endpoint, params.Encode()), nil)
 	} else {
 		req, err = http.NewRequest(method, endpoint, strings.NewReader(params.Encode()))
 		req.Header.Add("Content-Length", strconv.Itoa(len(params.Encode())))
-		fmt.Println("body posted")
 	}
 	if err != nil {
 		return nil, err
@@ -137,7 +135,6 @@ func (c Client) createRequest(method string, endpoint string, params url.Values)
 	if strings.Contains(endpoint, "/private") {
 		c.authenticate(req, params)
 	}
-	fmt.Println(req.URL.Path)
 	req.Header.Set("User-Agent", APIUserAgent)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
@@ -158,9 +155,6 @@ func (c Client) authenticate(req *http.Request, params url.Values) {
 	// set authentication headers
 	req.Header.Set("API-Key", c.key)
 	req.Header.Set("API-Sign", signature)
-
-	fmt.Println(c.key)
-	fmt.Println(signature)
 }
 
 // executeRequest takes a prepared http.Request and returns the body of the response
