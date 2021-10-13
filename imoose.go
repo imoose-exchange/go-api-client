@@ -100,12 +100,10 @@ func (c Client) request(method string, endpoint string, params url.Values, holde
 
 	if respErr != nil {
 		if len(data) > 0 {
-			fmt.Println(string(data))
 			imooseError := &ImooseError{}
 			if err := json.Unmarshal(data, &imooseError); err != nil {
 				return respErr
 			}
-			fmt.Println(imooseError.Errors)
 			return imooseError
 		}
 		return respErr
