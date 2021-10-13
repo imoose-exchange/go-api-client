@@ -80,5 +80,5 @@ type Order struct {
 	Received         float64  `json:"received,string"`
 	TradeCount       int32    `json:"trade_count"`
 	Fee              float64  `json:"fee,string"`
-	Trades           []string `json:"trades" dynamodbav:"trades"`
+	Trades           []string `json:"trades"`
 }
